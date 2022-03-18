@@ -6,6 +6,7 @@ import com.devsuperior.dscatalog.entities.Category;
 import com.devsuperior.dscatalog.repositories.CategoryRepository;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,6 +16,7 @@ public class CategoryService {
     
     public final CategoryRepository repository;
 
+    @Transactional(readOnly = true)
     public List<Category> findAll(){
         return repository.findAll();
     }
