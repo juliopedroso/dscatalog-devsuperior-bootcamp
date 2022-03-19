@@ -2,7 +2,7 @@ package com.devsuperior.dscatalog.resources;
 
 import java.util.List;
 
-import com.devsuperior.dscatalog.entities.Category;
+import com.devsuperior.dscatalog.dto.CategoryDTO;
 import com.devsuperior.dscatalog.services.CategoryService;
 
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,7 @@ public class CategoryResource {
     private final CategoryService service;
 
     @GetMapping
-    public ResponseEntity<List<Category>> findAll() {
-
+    public ResponseEntity<List<CategoryDTO>> findAll() {
         return ResponseEntity.ok().body(service.findAll());
     }
 
