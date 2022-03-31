@@ -52,7 +52,6 @@ class ProductServiceTests {
     private PageImpl<Product> page;
     private Product product;
     private ProductDTO productDTO;
-    private CategoryDTO categoryDTO;
 
     @BeforeEach
     void setup() throws Exception{
@@ -61,7 +60,6 @@ class ProductServiceTests {
         dependentId = 4L;
         product = Factory.createProduct();
         productDTO = Factory.createProductDTO();
-        categoryDTO = Factory.createCategoryDTO();
         page = new PageImpl<>(List.of(product));
 
         Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
@@ -74,7 +72,7 @@ class ProductServiceTests {
         Mockito.when(repository.getById(existingId)).thenReturn(product);
         Mockito.when(repository.getById(nonExistingId)).thenThrow(EntityNotFoundException.class);
 
-        Mockito.when(categoryRepository.getById(existingId)).thenReturn(new Category(2L, "Electronics"));
+        Mockito.when(categoryRepository.getById(existingId)).thenReturn( Factory.createCategory());
 
         doNothing().when(repository).deleteById(existingId);
         doThrow(EmptyResultDataAccessException.class).when(repository).deleteById(nonExistingId);
@@ -121,9 +119,9 @@ class ProductServiceTests {
 
     @Test
     void findByIdShouldReturnProductDTOWhenIdExists(){
-        ProductDTO productDTO = service.findById(existingId);
+        ProductDTO result = service.findById(existingId);
 
-        Assertions.assertNotNull(productDTO);
+        Assertions.assertNotNull(result);
 
         verify(repository,Mockito.times(1)).findById(existingId);
     }
