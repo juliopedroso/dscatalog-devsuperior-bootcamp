@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.EmptyResultDataAccessException;
 
 @DataJpaTest
-public class ProductRepositoryTests {
+class ProductRepositoryTests {
 
     @Autowired
     private ProductRepository repository;
@@ -30,7 +30,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void saveShouldPersistWithAutoincrementWhenIdIsNull(){
+    void saveShouldPersistWithAutoincrementWhenIdIsNull(){
 
         Product entity = Factory.createProduct();
         entity.setId(null);
@@ -42,7 +42,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void deleteShouldDeleteObjectWhenIdExists() {
+    void deleteShouldDeleteObjectWhenIdExists() {
 
         repository.deleteById(existentId);
 
@@ -52,7 +52,7 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void deleteShouldThrowExceptionWhenIdDoesNotExists() {
+    void deleteShouldThrowExceptionWhenIdDoesNotExists() {
 
         Assertions.assertThrows(EmptyResultDataAccessException.class, () -> {
             repository.deleteById(nonExistingId);
@@ -61,14 +61,15 @@ public class ProductRepositoryTests {
     }
 
     @Test
-    public void findByIdShouldReturnNonEmptyOptionalWhenIdExists(){
+    void findByIdShouldReturnNonEmptyOptionalWhenIdExists(){
 
         Optional<Product> result = repository.findById(existentId);
         Assertions.assertTrue(result.isPresent());
 
     }
+
     @Test
-    public void findByIdShouldReturnEmptyOptionalWhenIdNotExist(){
+    void findByIdShouldReturnEmptyOptionalWhenIdNotExist(){
         
         Optional<Product> result = repository.findById(nonExistingId);
         Assertions.assertTrue(result.isEmpty());
