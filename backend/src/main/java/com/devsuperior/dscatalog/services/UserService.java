@@ -19,15 +19,20 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
-public class UserService {
+@Log4j2
+public class UserService implements UserDetailsService {
 
     public final UserRepository repository;
 
@@ -86,7 +91,6 @@ public class UserService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }
-
     }
 
     private void copyDtoToEntity(UserDTO dto, User entity) {
@@ -100,5 +104,17 @@ public class UserService {
             Role role = roleRepository.getById(roleDTO.getId());
             entity.getRoles().add(role);
         });
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        User user = repository.findByEmail(username);
+        if (user == null){
+            log.error("User not found: " + username);
+            throw new UsernameNotFoundException("Email not found");
+        }
+        log.info("User found: " + username);
+        return user;
     }
 }
