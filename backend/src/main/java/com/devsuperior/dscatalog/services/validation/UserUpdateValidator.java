@@ -25,9 +25,7 @@ public class UserUpdateValidator implements ConstraintValidator<UserUpdateValid,
     private final UserRepository repository;
 
     @Override
-    public void initialize(UserUpdateValid constraintAnnotation) {
-
-    }
+    public void initialize(UserUpdateValid constraintAnnotation) { }
 
     @Override
     public boolean isValid(UserUpdateDTO dto, ConstraintValidatorContext context) {
