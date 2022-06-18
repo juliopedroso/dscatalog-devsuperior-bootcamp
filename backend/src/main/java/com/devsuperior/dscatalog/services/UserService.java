@@ -34,11 +34,11 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class UserService implements UserDetailsService {
 
-    public final UserRepository repository;
+    private final UserRepository repository;
 
-    public final RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
 
-    public final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public Page<UserDTO> findAllPaged(Pageable pageable) {
         Page<User> list = repository.findAll(pageable);
