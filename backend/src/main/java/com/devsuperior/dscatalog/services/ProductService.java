@@ -32,8 +32,8 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public List<ProductDTO> findAll() {
-        List<Product> list = repository.findAll();
-        return list.stream().map(ProductDTO::new).toList();
+        List<Product> page = repository.findAll();
+        return page.stream().map(ProductDTO::new).toList();
     }
 
     @Transactional(readOnly = true)
@@ -81,8 +81,9 @@ public class ProductService {
 
     public Page<ProductDTO> findAllPaged(Long categoryId, String name, Pageable pageable) {
         List<Category> categories = (categoryId == 0 ? null : Arrays.asList(categoryRepository.getById(categoryId)));
-        Page<Product> list = repository.find(categories, name, pageable);
-        return list.map(ProductDTO::new);
+        Page<Product> page = repository.find(categories, name, pageable);
+        repository.findProductsWithCategories(page.getContent());
+        return page.map(p -> new ProductDTO(p, p.getCategories()));
     }
 
     private void copyDtoToEntity(ProductDTO dto, Product entity) {

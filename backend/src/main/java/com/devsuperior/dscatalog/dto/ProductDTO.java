@@ -25,16 +25,21 @@ public class ProductDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
+    
     @Size(min = 5, max = 60, message = "Nome de ter entre 5 e 60 caracteres")
     @NotBlank(message = "Campo requirido")
     private String name;
+
     private String description;
+
     @Positive(message = "O preço deve ser um valor positivo")
     private Double price;
+
     private String imgUrl;
 
     @PastOrPresent(message = "A data do produto não pode ser futura")
     private Instant date;
+
     @Setter(value = AccessLevel.NONE)
     private List<CategoryDTO> categories = new ArrayList<>();
 
