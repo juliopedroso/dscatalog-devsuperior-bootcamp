@@ -42,6 +42,7 @@ public class Category implements Serializable {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
+    @EqualsAndHashCode.Exclude
     @Setter(value = AccessLevel.NONE)
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
