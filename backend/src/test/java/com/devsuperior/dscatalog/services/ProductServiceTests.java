@@ -1,5 +1,6 @@
 package com.devsuperior.dscatalog.services;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
@@ -61,12 +62,14 @@ class ProductServiceTests {
         productDTO = Factory.createProductDTO();
         page = new PageImpl<>(List.of(product));
 
-        Mockito.when(repository.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
+        Mockito.when(repository.findAll((Pageable)any())).thenReturn(page);
 
-        Mockito.when(repository.save(ArgumentMatchers.any())).thenReturn(product);
+        Mockito.when(repository.save(any())).thenReturn(product);
 
         Mockito.when(repository.findById(existingId)).thenReturn(Optional.of(product));
         Mockito.when(repository.findById(nonExistingId)).thenThrow(ResourceNotFoundException.class);
+
+        Mockito.when(repository.find(any(),any(),any())).thenReturn(page);
 
         Mockito.when(repository.getById(existingId)).thenReturn(product);
         Mockito.when(repository.getById(nonExistingId)).thenThrow(EntityNotFoundException.class);
@@ -109,11 +112,10 @@ class ProductServiceTests {
     @Test
     void findAllPagedShouldReturnPage(){
         Pageable pageable = PageRequest.of(0, 10);
-        Page<ProductDTO> result = service.findAllPaged(pageable);
+        Page<ProductDTO> result = service.findAllPaged(0L,"",pageable);
 
         Assertions.assertNotNull(result);
 
-        verify(repository).findAll(pageable);
     }
 
     @Test
